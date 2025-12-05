@@ -4,7 +4,7 @@ import { ProjectInputs, EstimationResult, FeasibilityResult } from '../types';
 // Initialize OpenAI client pointing to OpenRouter
 const client = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
-  apiKey: "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",
+  apiKey: import.meta.env.VITE_OPENROUTER_API_KEY,
   dangerouslyAllowBrowser: true // Client-side usage
 });
 
