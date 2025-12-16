@@ -162,23 +162,53 @@ const EstimatorForm: React.FC<Props> = ({ onEstimate, onFeasibilityCheck, isChec
           <div className={`p-4 rounded-lg border transition-all ${verdictConfig.bg} ${verdictConfig.border} mb-4`}>
             <div className="flex items-start gap-3">
               <VerdictIcon className={`w-6 h-6 mt-1 ${verdictConfig.text}`} />
-              <div>
+              <div className="flex-1">
                 <h3 className="font-bold text-slate-900 flex items-center gap-2">
                   Budget is {feasibilityData.budgetVerdict}
+                  {feasibilityData.issues.some(issue => issue.toLowerCase().includes('critical') || issue.toLowerCase().includes('impossible') || issue.toLowerCase().includes('timeline feasibility')) && (
+                    <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-medium">
+                      Critical Issues
+                    </span>
+                  )}
                 </h3>
                 <p className="text-sm mt-1 font-medium opacity-90">
-                  {feasibilityData.budgetVerdict === 'Realistic' 
-                    ? "Great! Your budget aligns with market rates." 
+                  {feasibilityData.budgetVerdict === 'Realistic'
+                    ? "Great! Your budget aligns with market rates."
                     : feasibilityData.budgetVerdict === 'Excessive'
                     ? "Your budget is significantly higher than market average. You can easily afford premium quality."
                     : "Budget appears too low for this location and size."
                   }
                 </p>
-                <ul className="text-sm mt-2 space-y-1">
-                  {feasibilityData.issues.slice(0, 2).map((s: string, i: number) => (
-                    <li key={i} className="text-slate-700 opacity-80">• {s}</li>
-                  ))}
-                </ul>
+
+                {/* Issues List - Show all issues, highlight critical ones */}
+                {feasibilityData.issues.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-sm font-medium text-slate-700 mb-2">Key Issues:</p>
+                    <ul className="text-sm space-y-1 max-h-32 overflow-y-auto">
+                      {feasibilityData.issues.map((issue: string, i: number) => (
+                        <li key={i} className={`flex items-start gap-2 ${issue.toLowerCase().includes('critical') || issue.toLowerCase().includes('impossible') ? 'text-red-700 font-medium' : 'text-slate-700'}`}>
+                          <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${issue.toLowerCase().includes('critical') || issue.toLowerCase().includes('impossible') ? 'bg-red-500' : 'bg-slate-400'}`}></span>
+                          <span className="leading-relaxed">{issue}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Suggestions */}
+                {feasibilityData.suggestions.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-sm font-medium text-slate-700 mb-2">Recommendations:</p>
+                    <ul className="text-sm space-y-1">
+                      {feasibilityData.suggestions.slice(0, 3).map((suggestion: string, i: number) => (
+                        <li key={i} className="text-slate-600 flex items-start gap-2">
+                          <span className="text-blue-500 mt-1.5">•</span>
+                          <span className="leading-relaxed">{suggestion}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>

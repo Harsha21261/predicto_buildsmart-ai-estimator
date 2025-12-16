@@ -53,8 +53,7 @@ export interface EstimationResult {
 
 export interface FeasibilityResult {
   isValid: boolean;
-  score: number;
-  budgetVerdict: 'Realistic' | 'Insufficient' | 'Excessive'; 
+  budgetVerdict: 'Realistic' | 'Insufficient' | 'Excessive';
   issues: string[];
   suggestions: string[];
 }
